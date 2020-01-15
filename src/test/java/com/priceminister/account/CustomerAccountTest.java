@@ -29,6 +29,7 @@ public class CustomerAccountTest {
     @Before
     public void setUp() throws Exception {
         customerAccount = new CustomerAccount();
+        rule = new CustomerAccountRule();
     }
 
     /**
@@ -44,7 +45,7 @@ public class CustomerAccountTest {
      * Adds money to the account and checks that the new balance is as expected.
      */
     @Test
-    public void testAddOperation() {
+    public void testAddOperation() throws IllegalAddException {
         Double oldBalance = customerAccount.getBalance();
         Double positiveAmount = 5.0;
         customerAccount.add(positiveAmount);
@@ -59,16 +60,16 @@ public class CustomerAccountTest {
      * existing code.
      */
     @Test(expected = IllegalBalanceException.class)
-    public void testWithdrawAndReportBalanceIllegalBalance() throws IllegalBalanceException {
+    public void testWithdrawAndReportBalanceIllegalBalance() throws IllegalBalanceException, IllegalWithdrawException {
         Double withdrawnAmount = customerAccount.getBalance() + 5.0;
-        customerAccount.withdrawAndReportBalance(withdrawnAmount, rule);
+       customerAccount.withdrawAndReportBalance(withdrawnAmount, rule);
     }
 
     /*
     Tests that a negative amount add throws the expected exception. 
      */
     @Test(expected = IllegalAddException.class)
-    public void testAddPositiveAmount() {
+    public void testAddPositiveAmount() throws IllegalAddException {
         Double negativeAmount = -5.0;
         customerAccount.add(negativeAmount);
     }
@@ -79,7 +80,7 @@ public class CustomerAccountTest {
     @Test(expected = IllegalWithdrawException.class)
     public void testwithdrawPositiveAmount() throws IllegalWithdrawException, IllegalBalanceException {
         Double negativeAmount = -5.0;
-        customerAccount.withdrawAndReportBalance(negativeAmount, rule);
+       customerAccount.withdrawAndReportBalance(negativeAmount, rule);
     }
 
 }

@@ -2,22 +2,36 @@ package com.priceminister.account.implementation;
 
 import com.priceminister.account.*;
 
-
 public class CustomerAccount implements Account {
 
-    public void add(Double addedAmount) {
-        // TODO Auto-generated method stub
+    private Double balance = 0.0;
+
+    public synchronized void add(Double addedAmount) throws IllegalAddException {
+        if (addedAmount <= 0.0) {
+            throw new IllegalAddException(addedAmount);
+
+        } else {
+            balance += addedAmount;
+        }
+
     }
 
-    public Double getBalance() {
-        // TODO Auto-generated method stub
-        return null;
+    public synchronized Double getBalance() {
+        return balance;
     }
 
-    public Double withdrawAndReportBalance(Double withdrawnAmount, AccountRule rule) 
-    		throws IllegalBalanceException {
-        // TODO Auto-generated method stub
-        return null;
+    public synchronized Double withdrawAndReportBalance(Double withdrawnAmount, AccountRule rule)
+            throws IllegalBalanceException, IllegalWithdrawException {
+        if (withdrawnAmount <= 0) {
+            throw new IllegalWithdrawException(withdrawnAmount);
+        } else {
+            if (rule.withdrawPermitted(balance - withdrawnAmount)) {
+                balance -= withdrawnAmount;
+            } else {
+                throw new IllegalBalanceException(balance);
+            }
+        }
+        return balance;
     }
 
 }

@@ -8,6 +8,10 @@ public class IllegalWithdrawException extends Exception {
         this.withdrawAmount = withdrawAmount;
     }
 
+    public IllegalWithdrawException() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String toString() {
         return "Illegal withdraw Amount: " + withdrawAmount;
     }
